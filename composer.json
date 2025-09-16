@@ -19,8 +19,7 @@
     },
     "extra": {
         "expose": [
-            "css",
-            "js"
+            "client/dist"
         ],
         "project-files-installed": [
             "behat.yml",
