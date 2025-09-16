@@ -3,3 +3,4 @@ behat.yml
 composer.lock
 public/
 .phpunit.result.cache
+client/node_modules/
