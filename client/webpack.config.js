@@ -1,36 +1,29 @@
-const path = require('path');
+const Path = require('path');
+const { JavascriptWebpackConfig, CssWebpackConfig } = require('@silverstripe/webpack-config');
 
-module.exports = {
-  entry: './src/entry.js',
-  output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: 'bundle.js',
-  },
-module: {
-  rules: [
-    {
-      test: /\.jsx?$/,
-      exclude: /node_modules/,
-      use: {
-        loader: 'babel-loader',
-        options: {
-          cacheDirectory: true
-        }
-      }
-    },
-    {
-      test: /\.css$/i,
-      use: ['style-loader', 'css-loader']
-    }
-  ]
-},
-  resolve: {
-    extensions: ['.js', '.jsx', '.css'],
-  },
-  externals: {
-    react: 'React',
-    'react-dom': 'ReactDOM',
-    jQuery: 'jQuery',
-  },
-  mode: 'production',
+const ENV = process.env.NODE_ENV;
+const PATHS = {
+  ROOT: Path.resolve(),
+  SRC: Path.resolve('src'),
+  DIST: Path.resolve('dist'),
 };
+
+const config = [
+  // Main JS bundle
+  new JavascriptWebpackConfig('js', PATHS, 'dnadesign/silverstripe-elemental')
+    .setEntry({
+      bundle: `${PATHS.SRC}/entry.js`,
+    })
+    .getConfig(),
+  // sass to css
+  new CssWebpackConfig('css', PATHS)
+    .setEntry({
+      bundle: `${PATHS.SRC}/colorpalette.scss`,
+    })
+    .getConfig(),
+];
+
+// Use WEBPACK_CHILD=js or WEBPACK_CHILD=css env var to run a single config
+module.exports = (process.env.WEBPACK_CHILD)
+  ? config.find((entry) => entry.name === process.env.WEBPACK_CHILD)
+  : config;
