@@ -3,11 +3,10 @@ const path = require('path');
 module.exports = {
   entry: './src/entry.js',
   output: {
-    filename: 'colorpalette.bundle.js',
     path: path.resolve(__dirname, 'dist'),
-    publicPath: '/client/dist/'
+    filename: 'bundle.js',
   },
-  module: {
+module: {
   rules: [
     {
       test: /\.jsx?$/,
@@ -15,17 +14,23 @@ module.exports = {
       use: {
         loader: 'babel-loader',
         options: {
-          presets: ['@babel/preset-env', '@babel/preset-react']
+          cacheDirectory: true
         }
       }
     },
     {
       test: /\.css$/i,
-      use: ['style-loader', 'css-loader'], // add this
+      use: ['style-loader', 'css-loader']
     }
   ]
 },
   resolve: {
-    extensions: ['.js', '.jsx']
-  }
+    extensions: ['.js', '.jsx', '.css'],
+  },
+  externals: {
+    react: 'React',
+    'react-dom': 'ReactDOM',
+    jQuery: 'jQuery',
+  },
+  mode: 'production',
 };

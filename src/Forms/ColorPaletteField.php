@@ -7,7 +7,7 @@ use SilverStripe\View\Requirements;
 
 class ColorPaletteField extends FormField
 {
-        private static $schemaComponent = 'ColorPaletteField';
+        protected $schemaComponent = 'ColorPaletteField';
 
     public function Type()
     {
@@ -22,7 +22,7 @@ public function getSchemaDataType()
     public function Field($properties = [])
     {
         $id = $this->ID();
-        $value = $this->Value();
+        $value = $this->getValue();
         $dataJson = htmlspecialchars(json_encode([
             'name' => $this->getName(),
             'value' => $value,
